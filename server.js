@@ -22,6 +22,11 @@ openBrowser();
 http.createServer(function (request, response) {
 
     // The requested URL, like http://localhost:8000/file.html => /file.html
+    if (path.normalize(decodeURI(request.url)) !== decodeURI(request.url)) {
+        response.statusCode = 403;
+        response.end();
+        return;
+    }
     var uri = url.parse(request.url).pathname;
     // get the /file.html from above and then find it from the current folder
     var filename = path.join(process.cwd(), uri);
